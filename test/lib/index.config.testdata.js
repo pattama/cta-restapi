@@ -23,7 +23,7 @@ const config = {
             handler: 'findOne',
           },
         ],
-        module: './providers/executions',
+        module: './node_moudles/cta-scheduler/lib/providers/scheduler.js',
       },
       {
         name: 'instances',

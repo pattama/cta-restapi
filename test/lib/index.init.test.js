@@ -7,6 +7,7 @@ const sinon = require('sinon');
 require('sinon-as-promised');
 const mockrequire = require('mock-require');
 
+const path = require('path');
 const RestApi = require('../../lib/index.js');
 const logger = require('cta-logger');
 
@@ -48,7 +49,8 @@ describe('RESTAPI - Init', function() {
           },
         });
         sinon.spy(mockProviders.get(providerConfig.name), 'MockConstructor');
-        mockrequire('../../lib/' + providerConfig.module, mockProviders.get(providerConfig.name).MockConstructor);
+        const pathToModule = path.join(process.cwd(), providerConfig.module);
+        mockrequire(pathToModule, mockProviders.get(providerConfig.name).MockConstructor);
       });
 
       restapi = new RestApi(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
@@ -79,7 +81,7 @@ describe('RESTAPI - Init', function() {
         DEFAULTCONFIG.properties.providers.forEach((providerConfig) => {
           providerConfig.routes.forEach((routeConfig) => {
             expect(DEFAULTCTAEXPRESS[routeConfig.method]
-              .calledWithExactly(routeConfig.path, restapi.providers.get(providerConfig.name)[routeConfig.handler.toLowerCase()])
+              .calledWithExactly(routeConfig.path, restapi.providers.get(providerConfig.name)[routeConfig.handler])
             ).to.equal(true);
           });
           expect(restapi.logger.info.calledWith(`Routes provider '${providerConfig.name}' loaded successfully.`)).to.equal(true);

@@ -43,7 +43,9 @@ describe('RESTAPI - Init', function() {
             };
             // the mock provider should have all the methods (e.g. handlers) defined in configuration routes Array
             providerConfig.routes.forEach(function(route) {
-              instance[route.handler] = sinon.stub();
+              instance[route.handler] = function() {};
+              // the instance must be bound to the handler, so we stub the bind method for the test
+              sinon.stub(instance[route.handler], 'bind').returns(instance[route.handler].bind(instance));
             });
             return instance;
           },
@@ -81,7 +83,7 @@ describe('RESTAPI - Init', function() {
         DEFAULTCONFIG.properties.providers.forEach((providerConfig) => {
           providerConfig.routes.forEach((routeConfig) => {
             expect(DEFAULTCTAEXPRESS[routeConfig.method]
-              .calledWithExactly(routeConfig.path, restapi.providers.get(providerConfig.name)[routeConfig.handler])
+              .calledWithExactly(routeConfig.path, restapi.providers.get(providerConfig.name)[routeConfig.handler].bind.returnValues[0])
             ).to.equal(true);
           });
           expect(restapi.logger.info.calledWith(`Routes provider '${providerConfig.name}' loaded successfully.`)).to.equal(true);

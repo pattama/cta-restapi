@@ -46,6 +46,6 @@
   "sourceDependencies": {
     "cta-brick": "*",
     "cta-logger": "*",
-    "cta-tools": "*"
+    "cta-common": "*"
   }
 }

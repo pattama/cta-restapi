@@ -34,7 +34,7 @@ describe('RESTAPI - Start', function() {
   });
   context('when everything ok', function() {
     it('should log a CTA-Express starting message', function() {
-      return expect(restapi.logger.info.calledWith(`Starting the CTA-Express application...`)).to.equal(true);
+      return expect(restapi.logger.info.calledWith('Starting the CTA-Express application...')).to.equal(true);
     });
 
     it('should call CTA-Express start()', function() {

@@ -68,7 +68,7 @@ describe('RESTAPI - Constructor', function() {
     it('should throw an error', function() {
       return expect(function() {
         return new RestApi(mockCementHelper, DEFAULTCONFIG);
-      }).to.throw(Error, `'express' dependency is missing in cementHelper`);
+      }).to.throw(Error, '\'express\' dependency is missing in cementHelper');
     });
   });
 

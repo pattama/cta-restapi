@@ -42,9 +42,9 @@
     "sinon-as-promised": "^4.0.0"
   },
   "dependencies": {
-    "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git",
-    "cta-common": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-common.git",
-    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger.git"
+    "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick.git#1.0.0",
+    "cta-common": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-common.git#1.0.0",
+    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger.git#1.0.0"
   }
 
 }

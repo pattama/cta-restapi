@@ -5,9 +5,6 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 const sinon = require('sinon');
 require('sinon-as-promised');
-const mockrequire = require('mock-require');
-
-const path = require('path');
 const RestApi = require('../../lib/index.js');
 const logger = require('cta-logger');
 

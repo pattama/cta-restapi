@@ -5,9 +5,6 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 const sinon = require('sinon');
 require('sinon-as-promised');
-const mockrequire = require('mock-require');
-
-const path = require('path');
 const RestApi = require('../../lib/index.js');
 const logger = require('cta-logger');
 
@@ -15,16 +12,6 @@ const DEFAULTLOGGER = logger();
 const DEFAULTCTAEXPRESS = {
   post: sinon.stub(),
   get: sinon.stub(),
-};
-const DEFAULTCEMENTHELPER = {
-  constructor: {
-    name: 'CementHelper',
-  },
-  brickName: 'restapi',
-  logger: DEFAULTLOGGER,
-  dependencies: {
-    express: DEFAULTCTAEXPRESS,
-  },
 };
 const DEFAULTCONFIG = require('./index.config.testdata.js');
 
@@ -51,10 +38,23 @@ describe('RESTAPI - Init', function() {
           },
         });
         sinon.spy(mockProviders.get(providerConfig.name), 'MockConstructor');
-        const pathToModule = path.join(process.cwd(), providerConfig.module);
-        mockrequire(pathToModule, mockProviders.get(providerConfig.name).MockConstructor);
       });
-
+      const DEFAULTCEMENTHELPER = {
+        constructor: {
+          name: 'CementHelper',
+        },
+        brickName: 'restapi',
+        logger: DEFAULTLOGGER,
+        dependencies: {
+          express: DEFAULTCTAEXPRESS,
+        },
+        require: (modulePath) => {
+          const name = DEFAULTCONFIG.properties.providers.filter((e) => {
+            return e.module === modulePath;
+          })[0].name;
+          return mockProviders.get(name).MockConstructor;
+        },
+      };
       restapi = new RestApi(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
       sinon.spy(restapi.logger, 'info');
       restapi.init().then(function(res) {

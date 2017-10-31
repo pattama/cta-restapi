@@ -247,6 +247,10 @@ const config = {
 
 * Should we implement **"declaration"** instead of **"implementation"** on providers?
 
+In my opinion, most Providers do _two things_: 1.) create a payload, 2.) create context and publish it.
+
+I suggest to implement these things as **middleware** and allow **cta-restapi** to use **middlewares** as providers. We will only **declare** the process in **configuration**, not have to implement **repetitive** providers. As well, it opens to customizable implementation via middlewares.
+
 ```javascript
 const config = {
   ...

@@ -11,6 +11,7 @@ We aim to give you brief guidelines here.
 1. [Usage](#1-usage)
 1. [Configuration](#2-configuration)
 1. [Providers](#3-providers)
+1. [Provider Implementation](#4-provider-implementation)
 
 ### 1. Usage
 
@@ -63,8 +64,9 @@ const config = {
 
 In configuration, there are _two_ **requirements**.
 
-* **cta-restapi** depends on **cta-expresswrapper**, [Dependency on cta-expresswrapper](#dependency-on-cta-expresswrapper)
-* **cta-restapi** needs **providers** to handle _http-actions_, [Providers on properties](#providers-on-properties)
+* **cta-restapi** requires **cta-expresswrapper** as _dependencies_, [Dependency on cta-expresswrapper](#dependency-on-cta-expresswrapper)
+
+* **cta-restapi** requires **providers** to handle _http-actions_, [Providers on properties](#providers-on-properties)
 
 ```javascript
 const config = {
@@ -81,10 +83,23 @@ const config = {
 
 #### #Dependency on cta-expresswrapper
 
-In the other file, the _configuration_ setups a tool using **cta-expresswrapper**. It setups _a tool_ called **"my-express"**.
+In **cta-restapi**, it requires a _name_ of the **tool** to run web application, in this case, **my-express** to **dependencies.express**.
 
 ```javascript
-// myexpress.js file
+// configuration file
+const config = {
+  ...
+  dependencies: {
+    express: 'my-express',
+  },
+  ...
+};
+```
+
+Then in the other file, the _configuration_ setups a tool using **cta-expresswrapper**. It setups _a tool_ called **"my-express"** to _match_ the **cta-restapi** configuration. Actually, _my-express_ configuration provides **port number** for _Express_ in **cta-expresswrapper**.
+
+```javascript
+// ./app/configs/tools/myexpress.js file
 const config = {
   tools: [
     {
@@ -98,22 +113,9 @@ const config = {
 };
 ```
 
-Then, in **cta-restapi**, we set the tool _name_, in this case, **my-express** to **dependencies.express**.
-
-```javascript
-// configuration file
-const config = {
-  ...
-  dependencies: {
-    express: 'my-express',
-  },
-  ...
-};
-```
-
 #### #Providers on properties
 
-Another requirement is **providers** in **properties**. **properties.providers** value must be an array of providers.
+Another requirement is **providers** in **properties** configuration. **properties.providers** value must be an array of providers.
 
 ```javascript
 const config = {
@@ -129,7 +131,7 @@ const config = {
 
 ### 3. Providers
 
-**Providers** are handlers to REST path and methods. These are _properties_ of **providers**.
+**Providers** are handlers to **REST** _path_ and _methods_. These are _properties_ of **providers**.
 
 * **name** - defines _the provider's **name**_
 
@@ -147,20 +149,17 @@ const config = {
 const config = {
   ...
   properties: {
-    providers: [
-      {
-        name: "sample-provider",
-        module: "./util/restapi/sample.provider.js",
-        routes: [
-          {
-            method: "get",
-            path: "/tasks",
-            handler: "allTasks",
-          },
-        ]
-      },
-      {...}
-    ],
+    providers: [{
+      name: "sample-provider",
+      module: "./util/restapi/sample.provider.js",
+      routes: [{
+        method: "get",
+        path: "/tasks",
+        handler: "allTasks",
+      }]
+    }, {
+      ...
+    }],
   },
   ...
 };
@@ -168,6 +167,61 @@ const config = {
 
 From this configuration, the **provider** named **"sample-provider"** is located at _"[root]/util/restapi/sample.provider.js"_.
 This provider has method called **"allTasks()"** to handle the _REST_ on path: **"GET:: /tasks"** (method: **_get_**, path: **_/tasks_**).
+
+[back to top](#guidelines)
+
+### 4. Provider Implementation
+
+**Providers Implementation** must be a class because **cta-restapi** instantiate it with **new ()**. **cta-restapi** provides **cementHelper** to provider's **constructor**.
+
+* **cta-restapi** provides **cementHelper** to **provider**'s costructor.
+
+```javascript
+// ./util/restapi/sample.provider.js
+class SampleProvider {
+  constructor(cementHelper) {
+    this.cementHelper = cementHelper;
+  }
+  ...
+}
+```
+
+It's **_strongly recommended_** to assign **cementHelper** to _instance_ for use in the class.
+
+#### #Provider Handlers
+
+The method called **"allTasks()"** is to handle the _REST_ on path: **"GET:: /tasks"** (method: **_get_**, path: **_/tasks_**).
+
+```javascript
+// ./util/restapi/sample.provider.js
+class SampleProvider {
+  constructor(cementHelper) {
+    this.cementHelper = cementHelper;
+  }
+
+  allTasks(req, res) {
+    const data = {
+      nature: {
+        type: 'tasks',
+        quality: 'getAll',
+      },
+      payload: req.body,
+    };
+
+    const context = this.cementHelper.createContext(data);
+    context.on('done', function (brickname, response) {
+      res.status(201).send(response);
+    });
+    context.once('reject', function (brickname, error) {
+      res.status(400).send(error.message);
+    });
+    context.once('error', function (brickname, error) {
+      res.status(400).send(error.message);
+    });
+    context.publish();
+  }
+}
+```
 
 [back to top](#guidelines)
 

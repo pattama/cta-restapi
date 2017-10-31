@@ -233,7 +233,7 @@ class SampleProvider {
 
 ## Considerations
 
-* Should we change specific, close-to-'ExpressJS' **dependencies.express** to a common name, dependencies.[restapp]?
+#### Should we change specific, close-to-'ExpressJS' **dependencies.express** to a common name, dependencies.[restapp]?
 
 ```javascript
 const config = {
@@ -245,7 +245,9 @@ const config = {
 };
 ```
 
-* Should we implement **"declaration"** instead of **"implementation"** on providers?
+------
+
+#### Should we implement **"declaration"** instead of **"implementation"** on providers?
 
 In my opinion, most Providers do _two things_: 1.) create a payload, 2.) create context and publish it.
 
@@ -282,3 +284,5 @@ const config = {
   ...
 };
 ```
+
+------

@@ -235,4 +235,46 @@ class SampleProvider {
 
 * Should we change specific, close-to-'ExpressJS' **dependencies.express** to a common name, dependencies.[restapp]?
 
+```javascript
+const config = {
+  ...
+  dependencies: {
+    express: 'my-express',  =>  restapp: 'my-express',
+  },
+  ...
+};
+```
+
 * Should we implement **"declaration"** instead of **"implementation"** on providers?
+
+```javascript
+const config = {
+  ...
+  properties: {
+    providers: [{
+      name: "sample-provider",
+      module: "./util/restapi/sample.provider.js",
+      routes: [{
+        method: "get",
+        path: "/tasks",
+        handler: "allTasks",
+      }]
+    }, {
+      name: "declaration-provider",
+      use: "restapi-to-payload"      // using middleware
+      routes: [{
+        method: "get",
+        path: "/tasks",
+        publish: {
+          topic: "tasks.service",
+          nature: {
+            type: "task",
+            quality: "getAll",
+          }
+        }
+      }]
+    }],
+  },
+  ...
+};
+```

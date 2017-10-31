@@ -249,7 +249,7 @@ const config = {
 
 In my opinion, most Providers do _two things_: 1.) create a payload, 2.) create context and publish it.
 
-I suggest to implement these things as **middleware** and allow **cta-restapi** to use **middlewares** as providers. We will only **declare** the process in **configuration**, not have to implement **repetitive** providers. As well, it opens to customizable implementation via middlewares.
+I suggest to implement these things as **middleware** and allow **cta-restapi** to use **middlewares** as providers. We will only <u>**declare**</u> the process in **configuration**, not have to implement <u>**repetitive**</u> providers which _do the same things over and over_. As well, it opens to **customizable implementation** via **middlewares** only as <u>it's really needed</u>.
 
 ```javascript
 const config = {
@@ -265,7 +265,7 @@ const config = {
       }]
     }, {
       name: "declaration-provider",
-      use: "restapi-to-payload"      // using middleware
+      use: "restapi-to-payload" // using middleware
       routes: [{
         method: "get",
         path: "/tasks",

@@ -15,7 +15,7 @@ We aim to give you brief guidelines here.
 
 ### 1. Usage
 
-**cta-restapi** extends **Brick** (_cta-brick_). In order to use it, we need to provide a **configuration**. **cta-restapi** depends on **cta-expresswrapper**.
+**cta-restapi** extends **Brick** (_cta-brick_). In order to use it, we need to provide a **configuration**. The **cta-restapi** depends on **cta-expresswrapper**.
 
 ```javascript
 const config = {

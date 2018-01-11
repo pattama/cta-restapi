@@ -1,4 +1,7 @@
-# cta-restapi [ ![build status](https://git.sami.int.thomsonreuters.com/compass/cta-restapi/badges/master/build.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-restapi/commits/master) [![coverage report](https://git.sami.int.thomsonreuters.com/compass/cta-restapi/badges/master/coverage.svg)](https://git.sami.int.thomsonreuters.com/compass/cta-restapi/commits/master)
+# cta-restapi
+[![Build Status](https://travis-ci.org/thomsonreuters/cta-restapi.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-restapi)
+[![Coverage Status](https://coveralls.io/repos/github/thomsonreuters/cta-restapi/badge.svg?branch=master)](https://coveralls.io/github/thomsonreuters/cta-restapi?branch=master)
+[![codecov](https://codecov.io/gh/thomsonreuters/cta-restapi/branch/master/graph/badge.svg)](https://codecov.io/gh/thomsonreuters/cta-restapi)
 
 REST API Modules for Compass Test Automation, One of Libraries in CTA-OSS Framework
 
@@ -140,9 +143,9 @@ const config = {
 * **routes** - provides _an array of **route handlers**_
 
   * **method** - defines **REST method type** : [ "_get_", "_post_", "_put_", "_patch_", "_delete_" ]
-  
+
   * **path** - defines **REST path**
-  
+
   * **handler** - defines **handler method name** of _provider_
 
 ```javascript
